@@ -1,14 +1,16 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
-if 'POSTGRES_DB' in os.environ:
-    DB_URL = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}" \
-             f"@localhost:5432/{os.getenv('POSTGRES_DB')}"
-else:
-    DB_URL = f"postgresql://biyaslan:1234@localhost:5432/ilyas_db"
+POSTGRES_HOST = os.getenv("POSTGRES_HOST_EXTERNAL")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT")
+POSTGRES_DB = os.getenv("POSTGRES_DB")
+POSTGRES_USER = os.getenv("POSTGRES_USER")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
 
-mode = "local"
-POSTGRES_HOST = "localhost" if mode == "local" else "192.168.99.100"
-POSTGRES_DB = os.getenv("POSTGRES_DB") or "biyaslan_db"
-POSTGRES_USER = os.getenv("POSTGRES_USER") or "biyaslan"
-POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD") or "1234"
+SQLALCHEMY_DATABASE_URI = os.getenv(
+    "SQLALCHEMY_DATABASE_URI",
+    f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+)

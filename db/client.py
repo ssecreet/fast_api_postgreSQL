@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from db.models import Person
+from db import Person, Keys
 
 
 class DBClientPerson:
@@ -20,3 +20,18 @@ class DBClientPerson:
         self.db_session.commit()
         self.db_session.refresh(db_person)
         return db_person
+
+class DBClientKeys:
+    def __init__(self, db_session: Session):
+        self.db_session = db_session
+
+    def get_keys_by_id(self, keys_id: int) -> Keys:
+        return self.db_session.query(Keys).filter(Keys.id == keys_id).one_or_none()
+
+    def add_keys(self, id, code, price, created_at=None) -> Keys:
+        db_keys = Keys(id=id, code=code,
+                       created_at=created_at, price=price)
+        self.db_session.add(db_keys)
+        self.db_session.commit()
+        self.db_session.refresh(db_keys)
+        return db_keys

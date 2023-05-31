@@ -2,7 +2,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from sqlalchemy.engine import URL
 
-from config import POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST
+from config import POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, SQLALCHEMY_DATABASE_URI
+
 
 url = URL.create(
     drivername="postgresql",
@@ -13,7 +14,8 @@ url = URL.create(
     database=POSTGRES_DB
 )
 
-engine = create_engine(url)  # движок для подключения к БД
+# engine = create_engine(url)  # движок для подключения к БД
+engine = create_engine(SQLALCHEMY_DATABASE_URI)
 
 Session = sessionmaker(bind=engine)
 
